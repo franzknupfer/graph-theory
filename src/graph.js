@@ -51,7 +51,7 @@ export default class Graph {
     }
   }
 
-  reachable(startingNode, targetNode) {
+  depthFirstReachable(startingNode, targetNode) {
     if ((!this.adjacencyList.has(startingNode)) || (!this.adjacencyList.has(targetNode))) {
       return false;
     }
@@ -59,6 +59,7 @@ export default class Graph {
     let traversedNodes = new Set();
     while (stack.length) {
       const currentNode = stack.shift();
+      console.log(`dfs: ${currentNode}`);
       if (currentNode === targetNode) {
         return true;
       } else {
@@ -73,4 +74,28 @@ export default class Graph {
     }
     return false;
   }
+
+  breadthFirstReachable(startingNode, targetNode) {
+    if ((!this.adjacencyList.has(startingNode)) || (!this.adjacencyList.has(targetNode))) {
+      return false;
+    }
+    let queue = [startingNode];
+    let traversedNodes = new Set();
+    while (queue.length) {
+      const currentNode = queue.shift();
+      if (currentNode === targetNode) {
+        return true;
+      } else {
+        traversedNodes.add(currentNode);
+        const adjacencyList = this.adjacencyList.get(currentNode);
+        adjacencyList.forEach(function(node) {
+          if (!traversedNodes.has(node)) {
+            queue.push(node);
+          }
+        });
+      }
+    }
+    return false;
+  }
+
 }
